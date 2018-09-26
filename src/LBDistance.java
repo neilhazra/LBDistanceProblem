@@ -14,7 +14,6 @@ public class LBDistance {
 	public static Set<String> allwords = new HashSet<String>();
 	public static Map<String, Set<String>> lbmap = new TreeMap<String, Set<String>>();
 	public static String alphabet = "abcdefghijklmnopqrstuvwxyz";	
-	static int asdf= 0;
 	public static int computeDistance(String word1, String word2) {
 		LinkedList<Word> navigate = new LinkedList<Word>();
 		Set<String> parsedWords = new HashSet<String>();
@@ -24,7 +23,6 @@ public class LBDistance {
 			parsedWords.add(current.s);
 			if(current.s.equals(word2)) return current.distance;
 			for(String s: lbmap.get(current.s))	{
-				asdf++;
 				navigate.add(new Word(s, current.distance+1));
 			}
 			Predicate<Word> personPredicate = p-> parsedWords.contains(p.s);
@@ -61,7 +59,17 @@ public class LBDistance {
 		}
 	}
 	public static void main(String args[]) {
+		System.out.println("Loading Dictionary");
 		initialize();		
-		System.out.println(lbmap.get("dog"));
+		Scanner sc = new Scanner(System.in);
+		System.out.println("List your first word");
+		String word1 = sc.next();
+		if(!lbmap.containsKey(word1)) System.out.println("Not in dictionary");
+		System.out.println("List your second word");
+		String word2 = sc.next();
+		if(!lbmap.containsKey(word2)) System.out.println("Not in dictionary");
+		if(word1.length() != word2.length()) System.out.println("Not equal lengths");
+		System.out.println("Computing LB Distance");
+		System.out.println("The LB Distance is: " + computeDistance(word1,word2));
 	}
 }
